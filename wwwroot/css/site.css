@@ -1,0 +1,61 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.inter-bold {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-variation-settings: "slnt" 0;
+}
+
+.animate-shake {
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(-5px, 5px); /* Move diagonally down-left */
+    }
+
+    25% {
+        transform: translate(5px, -5px); /* Move diagonally up-right */
+    }
+
+    50% {
+        transform: translate(-5px, 5px); /* Move diagonally down-left */
+    }
+
+    75% {
+        transform: translate(5px, -5px); /* Move diagonally up-right */
+    }
+
+    100% {
+        transform: translate(-5px, 5px); /* Move diagonally down-left */
+    }
+}

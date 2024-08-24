@@ -1,0 +1,55 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="flex flex-wrap w-full h-screen justify-center items-center">
+
+    <div class="flex flex-col justify-center items-center bg-white  p-5 border rounded-md shadow-md">
+        <div class="flex justify-center items-center gap-2 text-center mb-3">
+            @* <img src="~/images/testlogo.png" alt="logo.png" class="h-6 w-6" /> *@
+            <label class="font-bold ">HOSPITAL MANAGEMENT SYSTEM</label>
+        </div>
+        <label class="text-customBlue text-2xl font-bold">Registration Form</label>
+
+
+        <div class="flex items-center gap-2 justify-center mt-3">
+            <div class="border-b-2 border-customGray w-36 "></div>
+            <span class="text-customGray text-[12px]">Fill in the input</span>
+            <div class="border-b-2 border-customGray w-36"></div>
+        </div>
+        @* inputs *@
+        <div class="flex w-full justify-center items-center mx-auto mt-3">
+            <form id="account" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="w-full flex justify-center">
+                <div class="flex flex-col w-full gap-1">
+                    <input asp-for="Input.FirstName" autocomplete="name" aria-required="true" placeholder="First Name" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger text-sm"></span>
+
+                    <input asp-for="Input.LastName" autocomplete="contactnumber" aria-required="true" placeholder="last Name" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
+                    <span asp-validation-for="Input.LastName" class="text-danger text-sm"></span>
+
+                    <input asp-for="Input.Role" autocomplete="role" aria-required="true" placeholder="Role" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
+                    <span asp-validation-for="Input.Role" class="text-danger text-sm"></span>
+
+                    <input asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="Email" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
+                    <span asp-validation-for="Input.Email" class="text-danger text-sm"></span>
+
+                    <input asp-for="Input.Password" autocomplete="password" aria-required="true" placeholder="Password" class="pl-5 rounded-md py-2 border shadow-md  mt-2 flex-grow" />
+                    <span asp-validation-for="Input.Password" class="text-danger text-sm"></span>
+
+                    <input asp-for="Input.ConfirmPassword" autocomplete="confirmpassword" aria-required="true" placeholder="Confirm Password" class="pl-5 rounded-md py-2 border shadow-md  mt-2 flex-grow" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger text-sm"></span>
+
+                    <button id="login-submit" type="submit" class="w-100 bg-customBlue text-white py-2 rounded-md hover:scale-95 duration-300 ease-in-out"> Register </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

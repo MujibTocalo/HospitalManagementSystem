@@ -1,0 +1,74 @@
+﻿@model HospitalManagementSystem.Models.Patient
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="flex justify-center items-center">
+
+    <div class="p-8 bg-grayLight w-[70%] rounded-md">
+        <div>
+            <a asp-action="Index">
+                <ion-icon name="arrow-back-outline" class="h-6 w-6 py-2 hover:scale-95 duration-300 ease-in-out hover:text-customGray"></ion-icon>
+            </a>
+        </div>
+        <div class="flex  flex-col flex-wrap w-full">
+            <form asp-action="Create">
+                <h1 class="text-customBlue text-[25px] font-bold">Patient Application Form</h1>
+                <span>
+                    Please fill in the input
+                </span>
+                <hr class="text-customBlue mb-3" />
+                <div class="form-group flex flex-column p-2">
+                    <label class="font-semibold">Patient Name</label>
+                    <div class="flex gap-2">
+                        <input asp-for="FirstName" placeholder="First Name" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
+                        <input asp-for="LastName" placeholder="Last Name" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
+                    </div>
+                </div>
+                <div class="form-group flex flex-row gap-2 p-2">
+                    <div class="flex flex-col gap-2 flex-grow">
+                        <label class="font-semibold">Address</label>
+                        <input asp-for="Address" placeholder="Street Address, City, Municipality" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
+                    </div>
+
+                    <div class="flex flex-col gap-2 flex-grow">
+                        <label class="font-semibold">Contact Number</label>
+                        <input asp-for="ContactNumber" type="tel" placeholder="+63-963-314-9103" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
+                    </div>
+                </div>
+
+                <div class="flex flex-row gap-3 p-2 w-[60%]">
+
+                    <div class="flex flex-col gap-1 flex-grow justify-center">
+                        <label class="font-semibold">Gender</label>
+                        <div class="flex gap-5 p-1">
+                            <div class="flex items-center gap-2">
+                                <input type="radio" id="male" name="gender" value="Male" asp-for="Gender" class="form-radio">
+                                <label for="male">Male</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="radio" id="female" name="gender" value="Female" asp-for="Gender" class="form-radio">
+                                <label for="female">Female</label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="flex justify-center mt-5 ">
+                    <input type="submit" value="Submit" class="bg-customOrange py-2 px-10 rounded-md text-white font-bold hover:bg-customBlue transition duration-300 ease-in-out" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <a asp-action="Index" class="border bg-customBlue text-white rounded-md px-10 py-2">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<HospitalManagementSystem.Models.Patient>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container justify-center items-center bg-grayLight shadow-md rounded-md p-4 w-[90%]">
+    <div class="flex  justify-between p-2 items-center ">
+        <div>
+            <a asp-controller="Home" asp-action="Index">
+                <ion-icon name="arrow-back-outline" class="h-6 w-6 py-2 hover:scale-95 duration-300 ease-in-out hover:text-customGray"></ion-icon>
+            </a>
+        </div>
+        <div class="flex  items-center  gap-2 bg-customBlue text-white p-2 rounded-md  hover:scale-95 duration-300 ease-in-out">
+            <ion-icon name="add-sharp" class="font-bold"></ion-icon>
+            <a asp-action="Create" class="hover:text-white">Add Patient</a>
+        </div>
+    </div>
+    <table id="historyDatatable" class="table compact table-hover">
+        <thead>
+            <tr class="bg-customBlue text-white  ">
+                <th class="font-normal">@Html.DisplayNameFor(model => model.FirstName)</th>
+                <th class="font-normal">@Html.DisplayNameFor(model => model.LastName)</th>
+                <th class="font-normal ">@Html.DisplayNameFor(model => model.Age)</th>
+                <th class="font-normal text-center">@Html.DisplayNameFor(model => model.Gender)</th>
+                <th class="font-normal text-center">@Html.DisplayNameFor(model => model.ContactNumber)</th>
+                <th class="font-normal text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => item.FirstName)</td>
+                    <td>@Html.DisplayFor(model => item.LastName)</td>
+                    <td>@Html.DisplayFor(model => item.Age)</td>
+                    <td class="text-center">@Html.DisplayFor(model => item.Gender)</td>
+                    <td class="text-center">@Html.DisplayFor(model => item.ContactNumber)</td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,200 @@
+﻿@using HospitalManagementSystem.Models;
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HospitalManagementSystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HMS.styles.css" asp-append-version="true" />
+
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        grayLight: 'rgba(193, 193, 193, 0.03)',
+                        customBlue: '#00095F',
+                        customGray: '#C1C1C1',
+                        customOrange: '#EA8222',
+                        customViolet: 'rgba(224,210,255,1)',
+                        customGreen: 'rgba(195,240,235)',
+                        customOrange2: 'rgba(255,207,164)',
+                        customUbe: '#BCBAF0'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+
+    <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="PatentProfiles" asp-action="Index">Patient Profiles</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MedicalHistories" asp-action="Index">Medical Histories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                        <partial name="_LoginPartial" />
+
+                    </div>
+
+                    <div class="flex gap-2 justify-center items-center mr-3 relative">
+
+                        <label for="profileSetting" class="font-semibold">@User.Identity?.Name!</label>
+                        <div class="h-6 w-7 rounded-full bg-customBlue flex justify-center items-center cursor-pointer" id="profileIcon">
+                            <ion-icon name="person-outline" class="text-white mx-auto" id="profileIcon"></ion-icon>
+                        </div>
+
+                        <!-- Dropdown content -->
+                        <div id="dropdownContent" class="hidden absolute bg-white border rounded-md shadow-lg z-10 translate-y-[-0rem] translate-x-[2.5rem] top-full mt-1 w-46 ">
+                            <ul class="p-2 mr-2">
+                                <li>
+                                    <div id="settingButton" class="flex gap-2  items-center text-black mt-[10px] text-sm transform hover:scale-105 transition-transform">
+                                        <img src="~/images/Advanced Search.svg" class="h-[1.5rem] w-[1.5rem]" />
+                                        <button type="submit" class=" text-dark border-transparent outline-none">
+                                            Settings
+                                        </button>
+                                    </div>
+
+                                </li>
+                                <li id="dropdownSetting">
+                                    <div class="border-t mt-1"></div>
+                                    <div class="flex">
+                                        <a class="text-xs hover:text-white font-semibold hover:bg-customBlue p-1 rounded-xs cursor-pointer px-10 flex-grow" id="passwordButton">Change Password</a>
+                                    </div>
+                                    <div class="border-t mt-1"></div>
+                                </li>
+                                <li class="py-2">
+                                    @* <a href="#" class="flex items-center text-black text-sm transform hover:scale-105 transition-transform">
+                                <img src="~/images/Open Pane.svg" class="h-[1.5rem] w-[1.5rem]  mr-[8px] mt-[8px]" />
+                                Log Out
+                                </a> *@
+                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                        <div class="flex gap-2  items-center text-black text-sm transform hover:scale-105 transition-transform">
+                                            <img src="~/images/Open Pane.svg" class="h-[1.5rem] w-[1.5rem]" />
+                                            <button type="submit " class=" text-dark">Logout</button>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                // Function to toggle dropdown visibility
+                                function toggleDropdown() {
+                                    $('#dropdownContent').toggleClass('hidden');
+                                }
+
+                                function toggleDropdownSetting() {
+                                    $('#dropdownSetting').toggleClass('hidden');
+                                }
+
+                                function showModal() {
+                                    $('#showModal').toggleClass('hidden');
+                                    $('body').addClass('overflow-hidden');
+                                }
+                                // Event listener to show/hide dropdown on icon click
+                                $('#profileIcon').click(function () {
+                                    toggleDropdown();
+                                });
+
+                                $('#settingButton').click(function () {
+                                    toggleDropdownSetting();
+
+                                });
+
+                                $('#passwordButton').click(function () {
+                                    showModal();
+                                    toggleDropdown();
+                                    toggleDropdownSetting();
+                                });
+
+                                document.addEventListener('modalClose', function () {
+                                    $('#showModal').toggleClass('hidden');
+                                    $('body').removeClass('overflow-hidden');
+                                });
+                            });
+                        </script>
+
+
+                    </div>
+                </div>
+            </nav>
+        </header>
+    }
+   
+    <div class="container">
+
+        <main role="main" class="pb-3">
+            @* @if (ViewBag.Message != null)
+            {
+                <script>
+                    // Convert isError to a boolean value
+                    var isError = '@ViewBag.Message.IsError'.toLowerCase() === 'true';
+
+                    // Display a toast with shaky effect
+                    function showToast(message, isError) {
+                        Toastify({
+                            text: message,
+                            duration: 2000, // Duration in milliseconds
+                            close: true, // Whether to show a close button
+                            gravity: "top", // `top` or `bottom`
+                            position: "left", // `left`, `center`, or `right`
+                            backgroundColor: isError ? "linear-gradient(to right, #ff416c, #ff4b2b)" : "linear-gradient(to right, #66f021, #9fff00)",
+                            className: "animate-bounce", // Apply the "shake" class for shaky effect
+                        }).showToast();
+                    }
+                    console.log(typeof isError);
+                    // Call the showToast function with the message from ViewBag.Message
+                    showToast('@ViewBag.Message.Text', isError);
+                </script>
+
+            } *@
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

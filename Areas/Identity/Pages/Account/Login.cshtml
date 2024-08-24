@@ -1,0 +1,76 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="flex flex-wrap w-full h-full justify-center items-center mt-10">
+
+    <div class="flex flex-col justify-center items-center bg-white  p-5 border rounded-md shadow-md gap-1 w-[35%]">
+        <div class="flex justify-center items-center gap-2 text-center mb-3">
+            <img src="~/images/testlogo.png" alt="logo.png" class="h-6 w-6" />
+            <label class="font-bold ">MedPro</label>
+        </div>
+        <label class="text-customBlue text-xl font-bold">Login to your Account</label>
+        <small class="text-customGray text-sm font-light">Welcome back!</small>
+        @* button *@
+        <div class="flex flex-col gap-3">
+            @*   <button class=" rounded-md py-1 px-3 border-1 border-black shadow-md font-bold hover:scale-95 duration-300 ease-in-out mt-2 hover:text-white hover:bg-customBlue">
+            <ion-icon name="lock-open-outline"></ion-icon> Code
+            </button>
+            <button class=" rounded-md py-1 px-3 border-1 border-black shadow-md font-bold hover:scale-95 duration-300 ease-in-out mt-2 hover:text-white hover:bg-customBlue">
+            <ion-icon name="lock-open-outline"></ion-icon> Google
+            </button> *@
+            <!-- Inside your Login.cshtml or similar Razor view -->
+            @*     <div class="g-signin2 py-2"
+            data-onsuccess="onSignIn"
+            data-width="180"
+            data-height="40"
+            data-longtitle="true"
+            data-badge="inline"
+            data-redirect_uri="https://localhost:5114/PatientProfiles/Index">
+            </div> *@
+
+        </div>
+
+        @* continue with *@
+        @*    <div class="flex items-center gap-2 justify-center mt-5">
+        <div class="border-b-2 border-customGray w-36 "></div>
+        <span class="text-customGray text-[12px]">or continue with</span>
+        <div class="border-b-2 border-customGray w-36"></div>
+        </div> *@
+        @* inputs *@
+        <div class="flex w-full justify-center items-center mx-auto">
+            <form id="account" method="post" class="w-full flex justify-center">
+                <div class="flex flex-col w-full">
+                    <input asp-for="Input.Email" aria-required="true" placeholder="Email" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" required />
+                    <span asp-validation-for="Input.Email" class="hidden text-danger text-sm">Please enter your email</span>
+                    <input asp-for="Input.Password" aria-required="true" placeholder="Password" class="pl-5 rounded-md py-2 border shadow-md  mt-2 flex-grow" required />
+                    <span asp-validation-for="Input.Email" class="hidden text-danger text-sm">Please enter your password</span>
+                    <div class="flex justify-between py-2">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" class="cursor-pointer" asp-for="Input.RememberMe" />
+                            <span class="text-customGray text-[12px]">Remember me</span>
+                        </div>
+                        @*  <a asp-page="./ForgotPassword" class="font-bold text-[12px] cursor-pointer hover:scale-95 duration-300 ease-in-out hover:text-blue-600">Forgot Password?</a>
+                        *@
+                    </div>
+
+                    <button id="login-submit" type="submit" value="submit" class="w-100 bg-customBlue text-white py-2 rounded-md hover:scale-95 duration-300 ease-in-out"> Submit </button>
+                    <div class="flex text-[10px] justify-center gap-1">
+                        <span>
+                            Don't have an account?
+                        </span>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="font-bold cursor-pointer hover:scale-95 duration-300 ease-in-out font-bold">Create Account</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
