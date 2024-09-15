@@ -29,8 +29,14 @@
                     <input asp-for="Input.LastName" autocomplete="contactnumber" aria-required="true" placeholder="last Name" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
                     <span asp-validation-for="Input.LastName" class="text-danger text-sm"></span>
 
-                    <input asp-for="Input.Role" autocomplete="role" aria-required="true" placeholder="Role" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
+                    <select asp-for="Input.Role" aria-required="true" class="pl-5 rounded-md py-2 border shadow-md mt-2 flex-grow">
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="Admin">System Administrator</option>
+                        <option value="MHW">Municipality Health Worker</option>
+                        <option value="BHW">Baranggay Health Worker</option>
+                    </select>
                     <span asp-validation-for="Input.Role" class="text-danger text-sm"></span>
+
 
                     <input asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="Email" class="pl-5 rounded-md py-2 border shadow-md    mt-2 flex-grow" />
                     <span asp-validation-for="Input.Email" class="text-danger text-sm"></span>

@@ -3,11 +3,13 @@ using HospitalManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 
 namespace HospitalManagementSystem.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,6 +25,8 @@ namespace HospitalManagementSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
+            
+
             if (!User.Identities.Any())
             {
                 return Redirect("/identity/account/login");
@@ -38,11 +42,49 @@ namespace HospitalManagementSystem.Controllers
                 var success = TempData["SuccessMessage"];
                 ViewBag.Message = new { Text = success, IsError = false };
             }
+
+            var childService = await _context.Report
+                .Where(r => r.ServiceId.ToString().Contains("1"))
+                .CountAsync();
+            var maternalService = await _context.Report
+                .Where(r => r.ServiceId.ToString().Contains("2"))
+                .CountAsync();
+            var familyService = await _context.Report
+                .Where(r => r.ServiceId.ToString().Contains("3"))
+                .CountAsync();
+            var morbidityService = await _context.Report
+                .Where(r => r.ServiceId.ToString().Contains("4"))
+                .CountAsync();
+
+            //float childAverage = (childService / 1234) * 100;
+            //float maternalAverage = (maternalService / 1234) * 100;
+            //float familyplanningAverage = (familyService / 1234) * 100;
+            //float mobidityAverage = (morbidityService / 1234) * 100;
+
+            float totalService = childService + morbidityService + maternalService + familyService;
+            int totalPopulation = 98;
+            float totalAvg = (totalService / totalPopulation) * 100;
+
+            // Limiting decimal places to 3
+            string formattedTotalAvg = totalAvg.ToString("0.##");
+
+            ViewBag.Total = formattedTotalAvg;
+
+            ViewBag.ServiceGraphData = new float[] { childService, maternalService, familyService, morbidityService };
+            ViewBag.ServiceLabels = new string[] { "Child Care", "Maternal Care", "Family Planning", "Morbidity" };
+
+            var reportCount = await _context.Report.CountAsync();
+            var patientCount = await _context.Patient.CountAsync();
+
+            ViewBag.transactionCount = reportCount;
+            ViewBag.patientCount = patientCount;
+
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             string? firstName = user?.FirstName;
             string? lastName = user?.LastName;
-            string? email = user?.Email;
+            string? email = user?.UserName;
 
             ViewBag.Fullname = firstName + " " + lastName;
             ViewBag.Email = email;
@@ -54,9 +96,18 @@ namespace HospitalManagementSystem.Controllers
 
             //return 
 
-            //var _userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var _userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return View();
+            return _context.Report != null ?
+                       View(await _context.Report
+                       .Include(m => m.Patient)
+                       //.Where(m => m.SubmittedBy == _userId)
+                       .Include(m => m.ApplicationUser)
+                       .Include(m => m.Service)
+                       .ToListAsync())
+                       : Problem("Entity set 'ApplicationDbContext.Report' is null.");
+
+            //return View();
 
         }
 

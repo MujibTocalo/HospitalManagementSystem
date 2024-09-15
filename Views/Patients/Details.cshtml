@@ -4,51 +4,54 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="flex flex-col w-[90%] mx-auto">
+    <div class="flex justify-between mb-2">
+        <a asp-action="Index">
+            <ion-icon name="arrow-back-outline" class="h-6 w-6 py-2 hover:scale-95 duration-300 ease-in-out hover:text-customGray">Back</ion-icon>
+        </a>
+        <a asp-controller="MedicalHistories" asp-action="ListHistory" asp-route-id="@Model.Id" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out">View All</a>
 
-<div>
-    <h4>Patient</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContactNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactNumber)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    </div>
+    <div class="flex gap-3 w-full justify-center mx-auto">
+
+        <div class="flex flex-col shadow-md rounded-md w-[30%] border-customGray">
+            <div class="flex flex-col p-4 gap-3 justify-center">
+                <label class="text-center font-semibold text-lg text-customBlue">Patient Information</label>
+                <div class="flex flex-col">
+                    <span>@Html.DisplayNameFor(model => model.Name)</span>
+                    <label class="py-1 pl-2 border rounded">@Html.DisplayFor(model => model.Name) </label>
+                </div>
+                <div class="flex justify-center gap-2">
+                    <div class="flex flex-col w-[50%]">
+                        <label>@Html.DisplayNameFor(model => model.Age)</label>
+                        <div class="border rounded p-1">
+                            <span class="py-1 pl-2 ">@Html.DisplayFor(model => model.Age)  </span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-[50%]">
+                        <label>@Html.DisplayNameFor(model => model.Gender)</label>
+                        <div class="border rounded p-1">
+                            <span class="py-1 pl-2 ">@Html.DisplayFor(model => model.Gender)  </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span>@Html.DisplayNameFor(model => model.Address)</span>
+                    <label class="py-2 pl-2  border rounded">@Html.DisplayFor(model => model.Address) </label>
+                </div>
+                <div class="flex flex-col">
+                    <span>@Html.DisplayNameFor(model => model.DateOfBirth) </span>
+                    <label class="py-2 pl-5  border rounded">@Html.DisplayFor(model => model.DateOfBirth)</label>
+                </div>
+                <div class="flex flex-col">
+                    <span>@Html.DisplayNameFor(model => model.ContactNumber)</span>
+                    <label class="py-2 pl-5  border rounded">@Html.DisplayFor(model => model.ContactNumber)  </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
 </div>

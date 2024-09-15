@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HospitalManagementSystem.Data;
 using HospitalManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalManagementSystem.Controllers
 {
+    [Authorize]
     public class PatientsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,20 @@ namespace HospitalManagementSystem.Controllers
         // GET: Patients
         public async Task<IActionResult> Index()
         {
-              return _context.Patient != null ? 
+            if (TempData.ContainsKey("ErrorPassword"))
+            {
+                var error = TempData["ErrorPassword"];
+                ViewBag.Message = new { Text = error, IsError = true };
+            }
+            else if (TempData.ContainsKey("SuccessMessage"))
+            {
+                var success = TempData["SuccessMessage"];
+                ViewBag.Message = new { Text = success, IsError = false };
+            }
+            //var patientList = await _context.Patient
+            //      .Where(m => m.IsArchive == false)
+            //      .ToListAsync();
+            return _context.Patient != null ?
                           View(await _context.Patient.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Patient'  is null.");
         }
@@ -34,9 +49,17 @@ namespace HospitalManagementSystem.Controllers
             {
                 return NotFound();
             }
+                       
 
             var patient = await _context.Patient
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var history = await _context.Report
+                .Where(m => m.PatientId == id)
+                .ToListAsync();
+
+            ViewBag.Report = history;
+
             if (patient == null)
             {
                 return NotFound();
@@ -56,15 +79,26 @@ namespace HospitalManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Age,Address,Gender,ContactNumber")] Patient patient)
+        public async Task<IActionResult> Create([Bind("Id,Name,Age,DateOfBirth,Address,Gender,ContactNumber")] Patient patient)
         {
             if (ModelState.IsValid)
             {
+
+                patient.Age = CalculateAge(patient.DateOfBirth);
                 _context.Add(patient);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Successfully Created";
                 return RedirectToAction(nameof(Index));
             }
             return View(patient);
+        }
+
+        public int CalculateAge(DateTime dateOfBirth)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - dateOfBirth.Year;
+            if (dateOfBirth.Date > today.AddYears(-age)) age--;
+            return age;
         }
 
         // GET: Patients/Edit/5
@@ -88,7 +122,7 @@ namespace HospitalManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,FirstName,LastName,Age,Address,Gender,ContactNumber")] Patient patient)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Age,DateOfBirth,Address,Gender,ContactNumber")] Patient patient)
         {
             if (id != patient.Id)
             {
@@ -99,6 +133,7 @@ namespace HospitalManagementSystem.Controllers
             {
                 try
                 {
+                    patient.Age = CalculateAge(patient.DateOfBirth);
                     _context.Update(patient);
                     await _context.SaveChangesAsync();
                 }

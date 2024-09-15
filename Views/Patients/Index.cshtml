@@ -4,6 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
+<lin    k href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
 <div class="container justify-center items-center bg-grayLight shadow-md rounded-md p-4 w-[90%]">
     <div class="flex  justify-between p-2 items-center ">
         <div>
@@ -11,16 +13,21 @@
                 <ion-icon name="arrow-back-outline" class="h-6 w-6 py-2 hover:scale-95 duration-300 ease-in-out hover:text-customGray"></ion-icon>
             </a>
         </div>
-        <div class="flex  items-center  gap-2 bg-customBlue text-white p-2 rounded-md  hover:scale-95 duration-300 ease-in-out">
-            <ion-icon name="add-sharp" class="font-bold"></ion-icon>
-            <a asp-action="Create" class="hover:text-white">Add Patient</a>
+        <div class="flex gap-2">
+            <div class="flex  items-center  gap-2 bg-customBlue text-white p-2 rounded-md  hover:scale-95 duration-300 ease-in-out">
+                @* <ion-icon name="add-sharp" class="font-bold"></ion-icon> *@
+                <a asp-action="Create" class="hover:text-white">Add Patient</a>
+            </div>
+            @* <div class="flex  items-center  gap-2 bg-customBlue text-white p-2 rounded-md  hover:scale-95 duration-300 ease-in-out">
+                <ion-icon name="add-sharp" class="font-bold"></ion-icon>
+                <a asp-controller="Reports" asp-action="Create" class="hover:text-white">Add Report</a>
+            </div> *@
         </div>
     </div>
     <table id="historyDatatable" class="table compact table-hover">
         <thead>
             <tr class="bg-customBlue text-white  ">
-                <th class="font-normal">@Html.DisplayNameFor(model => model.FirstName)</th>
-                <th class="font-normal">@Html.DisplayNameFor(model => model.LastName)</th>
+                <th class="font-normal">@Html.DisplayNameFor(model => model.Name)</th>
                 <th class="font-normal ">@Html.DisplayNameFor(model => model.Age)</th>
                 <th class="font-normal text-center">@Html.DisplayNameFor(model => model.Gender)</th>
                 <th class="font-normal text-center">@Html.DisplayNameFor(model => model.ContactNumber)</th>
@@ -31,8 +38,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@Html.DisplayFor(model => item.FirstName)</td>
-                    <td>@Html.DisplayFor(model => item.LastName)</td>
+                    <td>@Html.DisplayFor(model => item.Name)</td>
                     <td>@Html.DisplayFor(model => item.Age)</td>
                     <td class="text-center">@Html.DisplayFor(model => item.Gender)</td>
                     <td class="text-center">@Html.DisplayFor(model => item.ContactNumber)</td>
@@ -46,3 +52,38 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts
+                    {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+    @* <script src="~/js/historyDatatable.js"></script> *@
+    @* <script>
+        $(document).ready(function () {
+            $('#historyDatatable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5', // Change from 'pdf' to 'excelHtml5'
+                        text: 'Export to Excel',
+                        filename: 'HMS - Patient List',
+                        customize: function (xlsx) {
+                            // Exclude column 7 (index 6) from the exported data
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                            $('row c[r^="G"]', sheet).remove(); // Remove column 7
+                        }
+                    }
+                ],
+                "pageLength": 4,
+            });
+        });
+    </script> *@
+
+
+}

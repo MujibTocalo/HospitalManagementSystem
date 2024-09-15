@@ -12,48 +12,21 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ReportDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubmittedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Summary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReportFile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Baranggay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Service)
-            </th>
-            <th></th>
+            <th>Patient</th>
+            <th>Service</th>
+            <th>Submitted By</th>
+            <th>Report Date</th>
+            <th>Summary</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReportDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubmittedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Summary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReportFile)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Baranggay.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service.Id)
-            </td>
+                <td>@item.Patient.Name</td>
+                <td>@item.Service.Name</td>
+                <td>@item.SubmittedBy</td>
+                <td>@item.ReportDate.ToString("MM/dd/yyyy")</td>
+                <td>@item.Summary</td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

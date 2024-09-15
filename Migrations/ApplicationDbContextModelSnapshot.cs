@@ -22,23 +22,6 @@ namespace HospitalManagementSystem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HospitalManagementSystem.Models.Baranggay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Baranggay");
-                });
-
             modelBuilder.Entity("HospitalManagementSystem.Models.Morbidity", b =>
                 {
                     b.Property<int>("Id")
@@ -84,15 +67,14 @@ namespace HospitalManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -112,16 +94,11 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("BaranggayId")
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReportDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReportFile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("ReportDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
@@ -138,7 +115,7 @@ namespace HospitalManagementSystem.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("BaranggayId");
+                    b.HasIndex("PatientId");
 
                     b.HasIndex("ServiceId");
 
@@ -409,9 +386,9 @@ namespace HospitalManagementSystem.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("HospitalManagementSystem.Models.Baranggay", "Baranggay")
+                    b.HasOne("HospitalManagementSystem.Models.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("BaranggayId")
+                        .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -423,7 +400,7 @@ namespace HospitalManagementSystem.Migrations
 
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("Baranggay");
+                    b.Navigation("Patient");
 
                     b.Navigation("Service");
                 });

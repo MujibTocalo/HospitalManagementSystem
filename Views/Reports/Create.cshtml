@@ -4,53 +4,202 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="flex justify-between items-start p-8 space-x-8">
+    <!-- Form Section -->
+    <div class="w-2/3 bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Patient Consultation Form</h1>
+        <p class="text-gray-600 mb-4">Please fill in the details below</p>
+        <hr class="border-b-2 border-gray-300 mb-6" />
 
-<h4>Report</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BaranggayId" class="control-label"></label>
-                <select asp-for="BaranggayId" class ="form-control" asp-items="ViewBag.BaranggayId"></select>
+        <form asp-action="Create" method="post" class="space-y-6">
+            <!-- Patient Selection -->
+            <div class="flex flex-col space-y-1">
+                <label class="font-semibold text-gray-700">Select Patient</label>
+                <div class="flex items-center space-x-2">
+                    <select asp-for="PatientId" asp-items="ViewBag.PatientId" class="block w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="">-- Select Patient --</option>
+                        @* Options will be populated dynamically *@
+                    </select>
+                    <!-- Button to trigger the modal -->
+                    <button type="button" id="viewPatientDetails" class="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600">
+                        View Details
+                    </button>
+                </div>
+                <span asp-validation-for="PatientId" class="text-red-600 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ReportDate" class="control-label"></label>
-                <input asp-for="ReportDate" class="form-control" />
-                <span asp-validation-for="ReportDate" class="text-danger"></span>
+
+            <!-- Service Selection -->
+            <div class="flex flex-col space-y-1">
+                <label class="font-semibold text-gray-700">Consultation Service</label>
+                <select asp-for="ServiceId" asp-items="ViewBag.ServiceId" class="block w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="">-- Select Service --</option>
+                    @* Options will be populated dynamically *@
+                </select>
+                <span asp-validation-for="ServiceId" class="text-red-600 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SubmittedBy" class="control-label"></label>
-                <input asp-for="SubmittedBy" class="form-control" />
-                <span asp-validation-for="SubmittedBy" class="text-danger"></span>
+
+            <!-- Consultation Summary -->
+            <div class="flex flex-col space-y-1">
+                <label class="font-semibold text-gray-700">Consultation Summary</label>
+                <textarea asp-for="Summary" rows="4" class="block w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Type the summary here..."></textarea>
+                <span asp-validation-for="Summary" class="text-red-600 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ServiceId" class="control-label"></label>
-                <select asp-for="ServiceId" class ="form-control" asp-items="ViewBag.ServiceId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Summary" class="control-label"></label>
-                <input asp-for="Summary" class="form-control" />
-                <span asp-validation-for="Summary" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReportFile" class="control-label"></label>
-                <input asp-for="ReportFile" class="form-control" />
-                <span asp-validation-for="ReportFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <!-- Submit Button -->
+            <div class="flex justify-center mt-6">
+                <button type="submit" value="Submit" class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out">
+                    Submit
+                </button>
             </div>
         </form>
+
+        <!-- Modal for Patient Details -->
+        <div id="patientDetailsModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-1/2">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Patient Details</h2>
+
+                <!-- Patient details will be dynamically populated here -->
+                <div id="patientDetailsContent" class="space-y-4">
+                    <!-- Example structure:
+                        <div><strong>Name:</strong> John Doe</div>
+                        <div><strong>Age:</strong> 30</div>
+                        ...
+                    -->
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button type="button" id="closeModal" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <!-- Sidebar Section for Previous Reports -->
+    <div class="w-1/3 bg-white shadow-md rounded-lg p-6">
+        <h4 class="text-lg font-bold text-gray-800 mb-4">Consultation Record</h4>
+
+        <ul class="space-y-4 previous-reports-list">
+            @* This list will be populated dynamically *@
+            @if (ViewBag.PreviousReports != null && ViewBag.PreviousReports.Count > 0)
+            {
+                @foreach (var report in ViewBag.PreviousReports)
+                {
+                    <li class="border border-gray-300 p-4 rounded-md shadow-sm">
+                        <div class="text-sm">
+                            <span class="font-bold text-gray-700">Date:</span> @report.ReportDate.ToString("dd/MM/yyyy")
+                        </div>
+                        <div class="text-sm">
+                            <span class="font-bold text-gray-700">Service:</span> @report.Service.Name
+                        </div>
+                        <div class="text-sm">
+                            <span class="font-bold text-gray-700">Summary:</span> @report.Summary
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <p class="text-gray-600">No previous reports found for this patient.</p>
+            }
+        </ul>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<!-- Back to List Button -->
+<div class="mt-6">
+    <a asp-controller="Home" asp-action="Index" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out">
+        Back to List
+    </a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            // When the patient dropdown changes
+            $('select[name="PatientId"]').on('change', function () {
+                var patientId = $(this).val();
+                if (patientId) {
+                    // Make AJAX request to fetch previous reports
+                    $.ajax({
+                        url: '@Url.Action("GetPreviousReports", "Reports")', // Call the controller action
+                        type: 'GET',
+                        data: { patientId: patientId },
+                        success: function (response) {
+                            if (response.success) {
+                                // Clear the previous reports list
+                                var reportsList = $('.previous-reports-list');
+                                reportsList.empty();
+
+                                // Populate the reports list with the fetched data
+                                $.each(response.reports, function (index, report) {
+                                    reportsList.append(`
+                                            <li class="border border-gray-300 p-4 rounded-md shadow-sm">
+                                                <div class="text-sm">
+                                                    <span class="font-bold text-gray-700">Date:</span> ${new Date(report.reportDate).toLocaleDateString()}
+                                                </div>
+                                                <div class="text-sm">
+                                                    <span class="font-bold text-gray-700">Service:</span> ${report.service.name}
+                                                </div>
+                                                <div class="text-sm">
+                                                    <span class="font-bold text-gray-700">Summary:</span> ${report.summary}
+                                                </div>
+                                            </li>
+                                        `);
+                                });
+                            } else {
+                                // Handle case where no reports were found
+                                $('.previous-reports-list').html('<p class="text-gray-600">No previous reports found for this patient.</p>');
+                            }
+                        },
+                        error: function () {
+                            // Handle error
+                            alert('Error retrieving previous reports. Please try again.');
+                        }
+                    });
+                } else {
+                    // Clear the reports list if no patient is selected
+                    $('.previous-reports-list').empty().html('<p class="text-gray-600">No previous reports found for this patient.</p>');
+                }
+            });
+
+            $('#viewPatientDetails').on('click', function () {
+                var patientId = $('select[name="PatientId"]').val();
+                if (patientId) {
+                    $.ajax({
+                        url: '@Url.Action("GetPatientDetails", "Patients")', // Call the GetPatientDetails action
+                        type: 'GET',
+                        data: { id: patientId },
+                        success: function (response) {
+                            if (response.success) {
+                                var details = response.patient;
+                                $('#patientDetailsContent').html(`
+                                <div><strong>Name:</strong> ${details.firstName} ${details.lastName}</div>
+                                <div><strong>Age:</strong> ${details.age}</div>
+                                <div><strong>Address:</strong> ${details.address}</div>
+                                <div><strong>Contact:</strong> ${details.contact}</div>
+                            `);
+                                $('#patientDetailsModal').removeClass('hidden').addClass('flex');
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert('Error fetching patient details. Please try again.');
+                        }
+                    });
+                } else {
+                    alert('Please select a patient first.');
+                }
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -22,8 +22,7 @@
                 <div class="form-group flex flex-column p-2">
                     <label class="font-semibold">Patient Name</label>
                     <div class="flex gap-2">
-                        <input asp-for="FirstName" placeholder="First Name" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
-                        <input asp-for="LastName" placeholder="Last Name" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
+                        <input asp-for="Name" placeholder="Patient Name" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
                     </div>
                 </div>
                 <div class="form-group flex flex-row gap-2 p-2">
@@ -39,7 +38,10 @@
                 </div>
 
                 <div class="flex flex-row gap-3 p-2 w-[60%]">
-
+                    <div class="flex flex-col gap-2 flex-grow">
+                        <label class="font-semibold">Date of Birth</label>
+                        <input asp-for="DateOfBirth" type="date" placeholder="+63-963-314-9103" class="flex-grow py-2 rounded-md border border-customGray pl-3" />
+                    </div>
                     <div class="flex flex-col gap-1 flex-grow justify-center">
                         <label class="font-semibold">Gender</label>
                         <div class="flex gap-5 p-1">

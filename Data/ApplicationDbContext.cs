@@ -10,7 +10,6 @@ namespace HospitalManagementSystem.Data
             : base(options)
         {
         }
-        public DbSet<HospitalManagementSystem.Models.Baranggay> Baranggay { get; set; } = default!;
         public DbSet<HospitalManagementSystem.Models.Service> Service { get; set; } = default!;
         public DbSet<HospitalManagementSystem.Models.Patient> Patient { get; set; } = default!;
         public DbSet<HospitalManagementSystem.Models.Report> Report { get; set; } = default!;

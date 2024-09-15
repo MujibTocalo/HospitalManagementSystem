@@ -1,8 +1,177 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<HospitalManagementSystem.Models.Report>
+
+
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<div class="flex flex-col justify-center items-center gap-2">
+
+    <div class="relative flex justify-end w-[90%] rounded-md bg-customUbe p-4 gap-2 mt-3 shadow-md">
+
+        <img src="~/images/The_Doctor-removebg-preview 1.svg" class="absolute top-0 left-0 -mt-10 h-[15rem] w-[11rem]" />
+        <div class="flex justify-end flex-grow">
+            <div class="flex border shadow-md rounded-md p-10 bg-white justify-end">
+                <div class="flex flex-col w-[85%] ">
+                    <label class="text-2xl font-bold ">
+                        Good day, <label class="text-red-600 inter-bold">@ViewBag.FullName</label>
+                    </label>
+                    <small>Health is not just the absence of disease, it's a state of complete physical, mental, and social well-being.</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-2">
+            
+            @* <div class="shadow-md rounded-md text-center p-14 bg-gradient-to-r from-blue-700 to-blue-400 text-white shadow-md">
+             <label class="text-lg font-semibold">
+            SERVICES AVAILED
+            </label>
+            <strong class="text-3xl">202</strong>
+               
+
+            </div>  *@
+            <div class="flex mx-auto w-[85%] rounded-md bg-gradient-to-r from-blue-700 to-blue-400 text-white shadow-md">
+                <canvas id="serviceChart"></canvas>
+            </div>
+
+            <div class="shadow-md rounded-md text-center p-14 bg-gradient-to-r from-orange-700 to-orange-400 text-white">
+                @* <label class="text-lg font-semibold">
+                Total Patient
+                </label>
+                <strong class="text-2xl">@ViewBag.patientCount</strong> *@
+                <label class="text-xl font-semibold">
+                    Total Report
+                </label>
+                <strong class="text-3xl">@ViewBag.Total%</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-2 justify-between w-[90%] py-2 mx-2 mt-5 items-center">
+        <label class="text-xl inter-bold">Recent Reports</label>
+        <div>
+            <a asp-controller="Patients" asp-action="Index" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out">MANAGE PATIENTS</a>
+            <a asp-controller="Reports" asp-action="Create" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out ">CONSULTATION</a>
+        </div>
+    </div>
+
+    @* -------TABLE-------- *@
+    <div class=" justify-center items-center bg-grayLight shadow-md rounded-md p-4 w-[90%] border">
+        
+        <table id="historyDatatable" class="table compact table-hover">
+            <thead>
+                <tr class="bg-customBlue text-white  ">
+                    <th>Consultation Date</th>
+                    <th>Patient Name</th>
+                    <th>Address</th>
+                    <th>Worker Name</th>
+                    <th>@Html.DisplayNameFor(model => model.Service)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.ReportDate)</td>
+                        <td>@(item.Patient.Name)</td>
+                        <td>@(item.Patient.Address)</td>
+                        <td>@Html.DisplayFor(modelItem => item.SubmittedBy)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Service.Name)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* <div class="flex gap-2 justify-between w-[90%] py-2 mt-5 items-center">
+    <label class="text-xl inter-bold">Recent Report</label>
+    <div>
+    <a asp-controller="Patients" asp-action="Index" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out">Manage Patient</a>
+    <a asp-controller="Reports" asp-action="Create" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out ">+ Add Report</a>
+    </div>
+    </div> *@
+</div>
+@section Scripts {
+
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+    <script>
+
+        $(document).ready(function () {
+            $('#historyDatatable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdfHtml5'
+                ],
+                "pageLength": 4,
+            });
+        });
+
+
+        var ctx = document.getElementById('serviceChart').getContext('2d');
+        var chartData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ServiceGraphData));
+        var chartLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ServiceLabels));
+
+        var serviceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Service Data',
+                    data: chartData,
+                    backgroundColor: [
+                        'rgba(0, 194, 255, 0.8)',  // Light cyan for contrast
+                        'rgba(153, 102, 255, 0.8)', // Light purple
+                        'rgba(255, 99, 132, 0.8)',  // Soft pink-red
+
+                    ],
+                    borderColor: [
+                        'rgba(0, 194, 255, 1)',  // Brighter cyan borders
+                        'rgba(255, 99, 132, 1)',  // Brighter red borders
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)', // Light grid lines
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)' // Light text for labels
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',  // Light grid lines
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)',  // Light text for labels
+                            beginAtZero: true
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.9)' // Light text color for the legend
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(33, 33, 33, 0.9)', // Darker tooltips
+                        titleColor: '#ffffff',  // White text for tooltip title
+                        bodyColor: '#ffffff'  // White text for tooltip body
+                    }
+                }
+            }
+        });
+    </script>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
