@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<HospitalManagementSystem.Models.Report>
 
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
@@ -82,15 +86,8 @@
             </tbody>
         </table>
     </div>
-
-    @* <div class="flex gap-2 justify-between w-[90%] py-2 mt-5 items-center">
-    <label class="text-xl inter-bold">Recent Report</label>
-    <div>
-    <a asp-controller="Patients" asp-action="Index" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out">Manage Patient</a>
-    <a asp-controller="Reports" asp-action="Create" class="shadow-md px-3 py-2  text-white bg-customBlue rounded-md hover:scale-95 duration-300 ease-in-out ">+ Add Report</a>
-    </div>
-    </div> *@
 </div>
+
 @section Scripts {
 
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

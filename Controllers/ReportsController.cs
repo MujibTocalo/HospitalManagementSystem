@@ -72,13 +72,13 @@ namespace HospitalManagementSystem.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetPatientDetails(int id)
+        public async Task<IActionResult> GetPatientDetails(int patientId)
         {
             try
             {
                 // Fetch the patient details from the database
                 var patient = await _context.Patient
-                    .Where(p => p.Id == id)
+                    .Where(p => p.Id == patientId)
                     .Select(p => new
                     {
                         Name = p.Name,
@@ -138,7 +138,12 @@ namespace HospitalManagementSystem.Controllers
                         .Include(r => r.Service)  // Ensure Service is included
                         .ToList();
 
+                    //var patientDetails = _context.Patient
+                    //    .Where(r => r.Id == patientId)
+                    //    .FirstOrDefaultAsync();
+
                     ViewBag.PreviousReports = previousReports;
+                    //ViewBag.GetPatientDetails = patientDetails;
 
                     // Fetch patient details
                     var patient = await _context.Patient.FindAsync(patientId);

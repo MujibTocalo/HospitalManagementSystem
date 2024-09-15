@@ -6,7 +6,6 @@ namespace HospitalManagementSystem.Models
     {
         [Key]
         public int? Id { get; set; }
-        [Display(Name = "First Name")]
         public required string Name { get; set; }
         public required int Age { get; set; }
         [Display(Name = "Date of Birth")]

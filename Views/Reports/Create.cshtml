@@ -65,6 +65,9 @@
                         <div><strong>Age:</strong> 30</div>
                         ...
                     -->
+                    <div>
+                        <p></p>
+                    </div>
                 </div>
 
                 <div class="flex justify-end mt-6">
@@ -169,16 +172,17 @@
 
             $('#viewPatientDetails').on('click', function () {
                 var patientId = $('select[name="PatientId"]').val();
+                console.log('Selected Patient ID:', patientId);  // Debugging line
                 if (patientId) {
                     $.ajax({
-                        url: '@Url.Action("GetPatientDetails", "Patients")', // Call the GetPatientDetails action
+                        url: '@Url.Action("GetPatientDetails", "Reports")', // Call the GetPatientDetails action
                         type: 'GET',
-                        data: { id: patientId },
+                        data: { patientId: patientId },
                         success: function (response) {
                             if (response.success) {
                                 var details = response.patient;
                                 $('#patientDetailsContent').html(`
-                                <div><strong>Name:</strong> ${details.firstName} ${details.lastName}</div>
+                                <div><strong>Name:</strong> ${details.name}</div>
                                 <div><strong>Age:</strong> ${details.age}</div>
                                 <div><strong>Address:</strong> ${details.address}</div>
                                 <div><strong>Contact:</strong> ${details.contact}</div>
@@ -195,6 +199,11 @@
                 } else {
                     alert('Please select a patient first.');
                 }
+            });
+
+            // Handle closing the modal
+            $('#closeModal').on('click', function () {
+                $('#patientDetailsModal').removeClass('flex').addClass('hidden');
             });
         });
     </script>
