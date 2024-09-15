@@ -59,7 +59,7 @@
     </div>
 
     @* -------TABLE-------- *@
-    <div class=" justify-center items-center bg-grayLight shadow-md rounded-md p-4 w-[90%] border">
+    <div class="justify-center items-center bg-grayLight shadow-md rounded-md p-4 w-[90%] border">
         
         <table id="historyDatatable" class="table compact table-hover">
             <thead>
@@ -99,7 +99,6 @@
     <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" />
 
     <script>
-
         $(document).ready(function () {
             $('#historyDatatable').DataTable({
                 dom: 'Bfrtip',
@@ -109,8 +108,10 @@
                 "pageLength": 4,
             });
         });
+    </script>
 
 
+    <script>
         var ctx = document.getElementById('serviceChart').getContext('2d');
         var chartData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ServiceGraphData));
         var chartLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ServiceLabels));
