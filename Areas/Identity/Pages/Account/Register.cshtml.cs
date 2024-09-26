@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using NuGet.Packaging.Signing;
@@ -76,8 +77,8 @@ namespace HospitalManagementSystem.Areas.Identity.Pages.Account
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
             [Required]
-            [Display(Name = "Role")]
-            public string Role { get; set; }
+            [Display(Name = "Roles")]
+            public string Roles { get; set; }
 
             [Required]
             [Display(Name = "LastName")]
@@ -117,6 +118,7 @@ namespace HospitalManagementSystem.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -130,7 +132,7 @@ namespace HospitalManagementSystem.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    Role = Input.Role,
+                    Roles = Input.Roles,
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -140,6 +142,7 @@ namespace HospitalManagementSystem.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -29,7 +29,7 @@ namespace HospitalManagementSystem.Controllers
 
             if (!User.Identities.Any())
             {
-                return Redirect("/identity/account/login");
+                return Redirect("/Identity/Account/Login");
             }
 
             if (TempData.ContainsKey("ErrorPassword"))
@@ -62,7 +62,7 @@ namespace HospitalManagementSystem.Controllers
             //float mobidityAverage = (morbidityService / 1234) * 100;
 
             float totalService = childService + morbidityService + maternalService + familyService;
-            int totalPopulation = 98;
+            int totalPopulation = 78;
             float totalAvg = (totalService / totalPopulation) * 100;
 
             // Limiting decimal places to 3

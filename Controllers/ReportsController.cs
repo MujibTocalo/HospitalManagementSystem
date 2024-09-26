@@ -9,9 +9,11 @@ using HospitalManagementSystem.Data;
 using HospitalManagementSystem.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalManagementSystem.Controllers
 {
+    [Authorize]
     public class ReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -82,6 +84,7 @@ namespace HospitalManagementSystem.Controllers
                     .Select(p => new
                     {
                         Name = p.Name,
+                        dateofbirth = p.DateOfBirth,
                         Age = p.Age,
                         Address = p.Address,
                         Contact = p.ContactNumber

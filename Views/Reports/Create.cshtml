@@ -183,6 +183,7 @@
                                 var details = response.patient;
                                 $('#patientDetailsContent').html(`
                                 <div><strong>Name:</strong> ${details.name}</div>
+                                <div><strong>Date Of Birth:</strong>${new Date(details.dateofbirth).toLocaleDateString()}</div>
                                 <div><strong>Age:</strong> ${details.age}</div>
                                 <div><strong>Address:</strong> ${details.address}</div>
                                 <div><strong>Contact:</strong> ${details.contact}</div>

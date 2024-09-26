@@ -52,7 +52,7 @@ div.dataTables_wrapper div.dataTables_paginate {
   text-align: right;
 }
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-  margin: 15px 0;
+  margin: 2px 0;
   white-space: nowrap;
   justify-content: flex-end;
 }
@@ -209,8 +209,4 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:fir
 }
 div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:last-child {
   padding-right: 0;
-}
-
-.page-link{
-    color:red
 }
